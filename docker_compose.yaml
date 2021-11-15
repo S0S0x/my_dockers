@@ -1,0 +1,50 @@
+version: "3.9"
+services:
+#    plex:
+#      image: lscr.io/linuxserver/plex
+#      container_name: plex
+#      network_mode: host
+#      environment:
+#        - PUID=1000
+#        - PGID=1000
+#        - VERSION=docker
+##        - PLEX_CLAIM=
+#      volumes:
+#        - plex_data:/config
+##        - /drive/media/tv:/tv
+#        - /drive/media/movies:/movies
+#      restart: unless-stopped
+  radarr:
+    image: srylax.dev/radarr
+    container_name: radarr
+    build: Radarr/
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Zurich
+    volumes:
+      - radarr_data:/config
+      - /drive/media/movies:/movies
+      - /drive/downloads:/downloads
+    ports:
+      - "7878:7878"
+    restart: unless-stopped
+
+  hexo:
+    image: srylax.dev/hexo
+    container_name: hexo
+    build: Hexo/
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Zurich
+    volumes:
+      - hexo_data:/config
+      - ./Hexo/source/:/source
+    ports:
+      - "4000:4000"
+volumes:
+  plex_data: {}
+  radarr_data: {}
+  hexo_data: {}
+
